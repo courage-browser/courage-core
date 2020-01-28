@@ -11,11 +11,13 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/playlists/browser/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
+using brave_playlists::features::kBravePlaylists;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_sync::features::kBraveSync;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
@@ -61,7 +63,12 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \
      flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
-     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},
+     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},                 \
+    {"brave-playlists",                                                    \
+     flag_descriptions::kBravePlaylistsName,                               \
+     flag_descriptions::kBravePlaylistsDescription,                        \
+     flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsLinux,             \
+     FEATURE_VALUE_TYPE(kBravePlaylists)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT
