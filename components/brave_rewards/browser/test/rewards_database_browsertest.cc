@@ -881,3 +881,14 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(token->redeem_type, ledger::RewardsType::ONE_TIME_TIP);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_28_ServerPublisherInfoCleared) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  InitDB();
+  EXPECT_EQ(CountTableRows("server_publisher_info"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_amounts"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_banner"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_links"), 0);
+}
