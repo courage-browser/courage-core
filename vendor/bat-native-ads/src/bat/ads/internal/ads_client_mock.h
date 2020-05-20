@@ -33,6 +33,20 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(GetAdsPerDay, uint64_t());
 
+  MOCK_CONST_METHOD0(GetCountrySubdivision, std::string());
+
+  MOCK_CONST_METHOD0(ShouldAllowSubdivisionAdTargeting, bool());
+
+  MOCK_CONST_METHOD0(DidOverrideAdsSubdivision, bool());
+
+  MOCK_CONST_METHOD0(IsSubdivisionAdTargetingRegion, bool());
+
+  MOCK_METHOD1(SetSubdivisionAdTargetingRegion, void(
+      bool is_country));
+
+  MOCK_METHOD1(SetCountrySubdivision, void(
+      const std::string& country_subdivision));
+
   MOCK_METHOD1(SetIdleThreshold, void(
       const int threshold));
 

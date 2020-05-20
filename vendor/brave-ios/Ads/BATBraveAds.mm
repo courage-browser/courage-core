@@ -36,6 +36,9 @@ static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 static NSString * const kAdsEnabledPrefKey = @"BATAdsEnabled";
 static NSString * const kNumberOfAdsPerDayKey = @"BATNumberOfAdsPerDay";
 static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
+static NSString * const kCountrySubdivisionPrefKey = @"BATCountrySubdivisionPrefKey";
+static NSString * const kDidOverrideAdsSubdivisionPrefKey = @"BATDidOverrideAdsSubdivisionPrefKey";
+static NSString * const kIsSubdivisionAdTargetingRegionPrefKey = @"BATIsSubdivisionAdTargetingRegion";
 
 @interface BATAdNotification ()
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
@@ -403,6 +406,36 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   [self.ledger setCatalogIssuers:[NSString stringWithUTF8String:info->ToJson().c_str()]];
 }
+
+- (BOOL)didOverrideAdsSubdivision
+{
+  return [(NSNumber *)self.prefs[kDidOverrideAdsSubdivisionPrefKey] boolValue];
+}
+
+- (const std::string)getCountrySubdivision
+{
+  const auto value = (NSString *)self.prefs[kCountrySubdivisionPrefKey];
+  if (!value) { return ""; }
+  return value.UTF8String;
+}
+
+- (void)setCountrySubdivision:(const std::string &)countrySubDivision
+{
+  self.prefs[kCountrySubdivisionPrefKey] = [NSString stringWithUTF8String:countrySubDivision.c_str()];
+  [self savePrefs];
+}
+
+- (BOOL)isSubdivisionAdTargetingRegion
+{
+  return [(NSNumber *)self.prefs[kIsSubdivisionAdTargetingRegionPrefKey] boolValue];
+}
+
+- (void)setSubdivisionAdTargetingRegion:(bool)isRegion
+{
+  self.prefs[kIsSubdivisionAdTargetingRegionPrefKey] = @(isRegion);
+  [self savePrefs];
+}
+
 
 #pragma mark - Configuration
 
