@@ -126,3 +126,27 @@ void NativeAdsClient::EventLog(const std::string & json) const {
 std::unique_ptr<ads::LogStream> NativeAdsClient::Log(const char * file, const int line, const ads::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];
 }
+
+bool NativeAdsClient::ShouldAllowSubdivisionAdTargeting() const {
+  return [bridge_ shouldAllowSubdivisionAdTargeting];
+}
+
+bool NativeAdsClient::DidOverrideAdsSubdivision() const {
+  return [bridge_ didOverrideAdsSubdivision];
+}
+
+std::string NativeAdsClient::GetCountrySubdivision() const {
+  return [bridge_ getCountrySubdivision];
+}
+
+void NativeAdsClient::SetCountrySubdivision(const std::string & country_subdivision) {
+  return [bridge_ setCountrySubdivision:country_subdivision];
+}
+
+bool NativeAdsClient::IsSubdivisionAdTargetingRegion() const {
+  return [bridge_ isSubdivisionAdTargetingRegion];
+}
+
+void NativeAdsClient::SetSubdivisionAdTargetingRegion(bool is_region) {
+  return [bridge_ setSubdivisionAdTargetingRegion:is_region];
+}
