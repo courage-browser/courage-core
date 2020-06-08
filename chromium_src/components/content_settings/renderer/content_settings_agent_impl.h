@@ -9,6 +9,12 @@
 #define BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_ \
 friend class BraveContentSettingsAgentImpl;
 
+#define IsWhitelistedForContentSettings                                     \
+  IsWhitelistedForContentSettings(const blink::WebSecurityOrigin& origin,   \
+                                  const blink::WebURL& document_url) const; \
+  bool IsWhitelistedForContentSettings
+
 #include "../../../../../components/content_settings/renderer/content_settings_agent_impl.h"
+#undef IsWhitelistedForContentSettings
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_

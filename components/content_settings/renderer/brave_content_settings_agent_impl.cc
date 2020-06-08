@@ -94,9 +94,10 @@ ContentSetting GetBraveContentSettingFromRules(
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
     bool should_whitelist,
-    service_manager::BinderRegistry* registry)
-    : ContentSettingsAgentImpl(render_frame, should_whitelist, registry) {
-}
+    std::unique_ptr<Delegate> delegate)
+    : ContentSettingsAgentImpl(render_frame,
+                               should_whitelist,
+                               std::move(delegate)) {}
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {
 }
@@ -236,8 +237,8 @@ bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
   return !content_setting_rules_ ||
-         ::IsBraveShieldsDown(frame, secondary_url,
-                              content_setting_rules_->brave_shields_rules);
+         ::content_settings::IsBraveShieldsDown(
+             frame, secondary_url, content_setting_rules_->brave_shields_rules);
 }
 
 bool BraveContentSettingsAgentImpl::AllowFingerprinting(
