@@ -164,7 +164,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       // this feature.
       features::kWebUIDarkMode.name,
       features::kReducedReferrerGranularity.name,
-      network::features::kCapReferrerToOriginOnCrossOrigin.name,
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
