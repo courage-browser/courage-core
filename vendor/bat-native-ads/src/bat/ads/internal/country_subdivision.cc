@@ -80,8 +80,8 @@ void CountrySubdivision::Fetch() {
     return;
   }
 
-  BLOG(1, "Fetch country subdivision");
-  BLOG(2, "GET " << GETSTATE_PATH);
+  BLOG(INFO) << "Fetch country subdivision";
+  BLOG(INFO) << "GET " << GETSTATE_PATH;
 
   auto callback = std::bind(&CountrySubdivision::OnFetchCountrySubdivision,
       this, url_, _1, _2, _3);
@@ -95,23 +95,30 @@ void CountrySubdivision::OnFetchCountrySubdivision(
     const uint16_t response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  BLOG(7, UrlResponseToString(url, response_status_code, response, headers));
+  BLOG(INFO) << "URL Request Response:";
+  BLOG(INFO) << "  URL: " << url;
+  BLOG(INFO) << "  Response Status Code: " << response_status_code;
+  BLOG(INFO) << "  Response: " << response;
+  BLOG(INFO) << "  Headers:";
+  for (const auto& header : headers) {
+    BLOG(INFO) << "    " << header.first << ": " << header.second;
+  }
 
   bool should_retry = false;
 
   if (response_status_code / 100 == 2) {
     if (!response.empty()) {
-      BLOG(1, "Successfully fetched country subdivision");
+      BLOG(INFO) << "Successfully fetched country subdivision";
     }
 
     if (!Process(response)) {
-      BLOG(1, "Failed to parse country subdivision");
+      BLOG(INFO) << "Failed to parse country subdivision";
       should_retry = true;
     }
   } else if (response_status_code == 304) {
-    BLOG(1, "Country subdivision is up to date");
+    BLOG(INFO) << "Country subdivision is up to date";
   } else {
-    BLOG(1, "Failed to fetch country subdivision");
+    BLOG(INFO) << "Failed to fetch country subdivision";
 
     should_retry = true;
   }
@@ -146,7 +153,7 @@ bool CountrySubdivision::Process(
   std::string country_subdivision =
       base::StringPrintf("%2s-%1s", country.c_str(), region.c_str());
   ads_client_->SetCountrySubdivision(country_subdivision);
-  BLOG(3, "Country subdivision set to " << country_subdivision);
+  BLOG(INFO) << "Country subdivision set to " << country_subdivision;
 
   return true;
 }
@@ -156,7 +163,8 @@ void CountrySubdivision::Retry() {
       kRetryFetchCountrySubdivisionAfterSeconds,
           base::BindOnce(&CountrySubdivision::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Retry fetching country subdivision " << FriendlyDateAndTime(time));
+  BLOG(INFO) << "Retry fetching country subdivision "
+      << FriendlyDateAndTime(time);
 }
 
 void CountrySubdivision::FetchAfterDelay() {
@@ -166,7 +174,7 @@ void CountrySubdivision::FetchAfterDelay() {
   const base::Time time = timer_.StartWithPrivacy(delay,
       base::BindOnce(&CountrySubdivision::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch country subdivision " << FriendlyDateAndTime(time));
+  BLOG(INFO) <<  "Fetch country subdivision " << FriendlyDateAndTime(time);
 }
 
 void CountrySubdivision::BuildUrl() {
