@@ -14,6 +14,7 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
+#include "net/base/isolation_info.h"
 
 namespace brave {
 
@@ -76,10 +77,9 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
   if (request.trusted_params) {
-    ctx->tab_origin =
-        request.trusted_params->network_isolation_key.GetTopFrameOrigin()
-            .value_or(url::Origin())
-            .GetURL();
+    ctx->tab_origin = request.trusted_params->isolation_info.top_frame_origin()
+                          .value_or(url::Origin())
+                          .GetURL();
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
