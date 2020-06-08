@@ -7,6 +7,33 @@
 
 #include "base/big_endian.h"
 
+namespace {
+
+bool GetPayloadExtent(
+    base::StringPiece padded_string,
+    size_t* start,
+    size_t* length) {
+  DCHECK(start);
+  DCHECK(length);
+
+  if (padded_string.size() < sizeof(uint32_t)) {
+    return false;  // Missing length field
+  }
+
+  // Read payload length from the header.
+  uint32_t data_length;
+  base::ReadBigEndian(padded_string.data(), &data_length);
+  if (padded_string.size() < data_length + sizeof(uint32_t)) {
+    return false;  // Payload shorter than expected length
+  }
+
+  *start = sizeof(uint32_t);
+  *length = data_length;
+  return true;
+}
+
+}  // namespace
+
 namespace brave {
 
 bool PrivateCdnHelper::RemovePadding(std::string* padded_string) const {
@@ -14,22 +41,30 @@ bool PrivateCdnHelper::RemovePadding(std::string* padded_string) const {
     return false;
   }
 
-  if (padded_string->size() < sizeof(uint32_t)) {
-    return false;  // Missing length field
+  size_t start;
+  size_t length;
+  if (!GetPayloadExtent(*padded_string, &start, &length)) {
+    return false;
   }
 
-  // Read payload length from the header.
-  uint32_t data_length;
-  base::ReadBigEndian(padded_string->c_str(), &data_length);
+  padded_string->erase(0, start);
+  padded_string->resize(length);
+  return true;
+}
 
-  // Remove length header.
-  padded_string->erase(0, sizeof(uint32_t));
-  if (padded_string->size() < data_length) {
-    return false;  // Payload shorter than expected length
+bool PrivateCdnHelper::RemovePadding(base::StringPiece* padded_string) const {
+  if (!padded_string) {
+    return false;
   }
 
-  // Remove padding.
-  padded_string->resize(data_length);
+  size_t start;
+  size_t length;
+  if (!GetPayloadExtent(*padded_string, &start, &length)) {
+    return false;
+  }
+
+  padded_string->remove_prefix(start);
+  padded_string->remove_suffix(padded_string->size() - length);
   return true;
 }
 
