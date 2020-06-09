@@ -78,6 +78,7 @@ static NSString * const kIsSubdivisionAdTargetingRegionPrefKey = @"BATIsSubdivis
       self.prefs = [[NSMutableDictionary alloc] init];
       self.numberOfAllowableAdsPerDay = kDefaultNumberOfAdsPerDay;
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
+      self.adTargetingSubdivision = "Automatically detected";
     }
 
     [self setupNetworkMonitoring];
@@ -207,6 +208,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)setNumberOfAllowableAdsPerHour:(NSInteger)numberOfAllowableAdsPerHour
 {
   self.prefs[kNumberOfAdsPerHourKey] = @(numberOfAllowableAdsPerHour);
+  [self savePrefs];
+}
+
+- (NSString *)adTargetingSubdivision
+{
+  const auto value = (NSString *)self.prefs[kCountrySubdivisionPrefKey];
+  if (!value) { return ""; }
+  return value.UTF8String;
+}
+
+- (void)setAdTargetingSubdivision:(NSString *)adTargetingSubdivision
+{
+  self.prefs[kCountrySubdivisionPrefKey] = @(adTargetingSubdivision)
   [self savePrefs];
 }
 

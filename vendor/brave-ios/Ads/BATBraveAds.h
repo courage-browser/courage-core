@@ -86,6 +86,9 @@ NS_SWIFT_NAME(BraveAds)
 /// The max number of ads the user can see in a day
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerDay NS_SWIFT_NAME(adsPerDay);
 
+/// Ad targeting subdivision
+@property (nonatomic, copy) NSString * adTargetingSubdivision;
+
 /// The user model locales Brave Ads supports currently
 @property (nonatomic, readonly) NSArray<NSString *> *userModelLanguages;
 
