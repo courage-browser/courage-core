@@ -24,8 +24,8 @@ addParameters({
 
 addParameters({
   options: {
-    name: 'Brave Browser UI',
-    url: 'https://github.com/brave/brave-core',
+    name: 'Courage Browser UI',
+    url: 'https://github.com/courage-browser/courage-core',
     panelPosition: 'right'
   }
 })

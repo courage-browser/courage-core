@@ -40,9 +40,9 @@ final class Config {
     "/usr/local/opt/llvm/include/c++/v1",
     "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
     // Temporary hack:
-    "/Users/kyle/git/brave/brave-browser/src/",
-    "/Users/kyle/git/brave/brave-browser/src/out/sim-release/gen/brave/vendor/bat-native-ledger/include",
-    "/Users/kyle/git/brave/brave-browser/src/out/sim-release/gen/",
+    "/Users/kyle/git/courage-browser/courage-browser/src/",
+    "/Users/kyle/git/courage-browser/courage-browser/src/out/sim-release/gen/brave/vendor/bat-native-ledger/include",
+    "/Users/kyle/git/courage-browser/courage-browser/src/out/sim-release/gen/",
   ]
 }
 

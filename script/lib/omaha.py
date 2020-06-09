@@ -88,7 +88,7 @@ def get_app_info(appinfo, args):
     to perform the upload
     """
 
-    changelog_url = "https://github.com/brave/brave-browser/blob/master/CHANGELOG_DESKTOP.md"
+    changelog_url = "https://github.com/courage-browser/courage-browser/blob/master/CHANGELOG_DESKTOP.md"
     chrome_major = get_chrome_version().split('.')[0]
     chrome_minor = get_chrome_version().split('.')[1]
 
